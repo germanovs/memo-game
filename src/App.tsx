@@ -1,22 +1,22 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, FC } from 'react'
 import './App.css'
 
-type opened =  [ number, number ];
+type opened = [number, number];
 type game = number[];
 
-function App() {
+const App: FC = (): JSX.Element => {
 
 	const [game, setGame] = useState<game>([])
 	const [opened, setOpened] = useState<opened>([-1, -1])
 	const [finished, setFinished] = useState<number[]>([])
-	const [ moves, setMoves ] = useState<number>(0)
-	
+	const [moves, setMoves] = useState<number>(0)
+
 	useEffect(() => {
 		startGame();
 	}, [])
 
 	const startGame = () => {
-		const numbers = [ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6 ];
+		const numbers = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6];
 		const shuffled = numbers.sort(() => Math.random() - 0.5);
 		setOpened([-1, -1]);
 		setFinished([]);
@@ -74,26 +74,24 @@ function App() {
 							openCard={openCard}
 							opened={opened}
 							finished={finished}
-							/>
+						/>
 					})
 				}
 			</div>
 
 			{
-			gameIsFinished 
-			? <div>Game is finished in {moves} moves!</div>
-			: <div>Moves: {moves} </div>
+				gameIsFinished
+					? <div>Game is finished in {moves} moves!</div>
+					: <div>Moves: {moves} </div>
 			}
-			
+
 			<button onClick={() => startGame()}>Restart</button>
 		</>
 	)
 }
 
-function Card({ value, index, openCard, opened, finished }: { value: number, index: number, openCard: (index: number) => void, opened: opened, finished: number[] })
-{
-	console.log(opened);
-	
+function Card({ value, index, openCard, opened, finished }: { value: number, index: number, openCard: (index: number) => void, opened: opened, finished: number[] }) {
+
 	const className = useMemo(() => {
 		let className = 'card';
 		if (finished.includes(value)) {
