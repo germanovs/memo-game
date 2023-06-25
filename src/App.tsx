@@ -1,12 +1,10 @@
 import { useEffect, useState, useMemo, FC } from 'react'
+import Card from './Card'
 import './App.css'
-
-type opened = [number, number];
-type game = number[];
 
 const App: FC = (): JSX.Element => {
 
-	const [game, setGame] = useState<game>([])
+	const [game, setGame] = useState<number[]>([])
 	const [opened, setOpened] = useState<opened>([-1, -1])
 	const [finished, setFinished] = useState<number[]>([])
 	const [moves, setMoves] = useState<number>(0)
@@ -88,31 +86,6 @@ const App: FC = (): JSX.Element => {
 			<button onClick={() => startGame()}>Restart</button>
 		</>
 	)
-}
-
-function Card({ value, index, openCard, opened, finished }: { value: number, index: number, openCard: (index: number) => void, opened: opened, finished: number[] }) {
-
-	const className = useMemo(() => {
-		let className = 'card';
-		if (finished.includes(value)) {
-			className += ' finished';
-		}
-		if (opened.includes(index)) {
-			className += ' opened';
-		}
-		return className;
-	}, [opened, finished, value, index])
-
-	return <>
-		<div className="card-wrapper">
-			<div className={className} onClick={() => openCard(index)}>
-				<div className="card-front">
-					?
-				</div>
-				{value}
-			</div>
-		</div>
-	</>
 }
 
 export default App
