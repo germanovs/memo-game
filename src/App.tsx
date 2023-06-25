@@ -2,6 +2,8 @@ import { useEffect, useState, useMemo, FC } from 'react'
 import Card from './Card'
 import './App.css'
 
+const possibles = [ 1, 2, 3, 4, 5, 6, 7, 8 ];
+
 const App: FC = (): JSX.Element => {
 
 	const [game, setGame] = useState<number[]>([])
@@ -14,7 +16,7 @@ const App: FC = (): JSX.Element => {
 	}, [])
 
 	const startGame = () => {
-		const numbers = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6];
+		const numbers = [ ...possibles, ...possibles ];
 		const shuffled = numbers.sort(() => Math.random() - 0.5);
 		setOpened([-1, -1]);
 		setFinished([]);
@@ -56,13 +58,13 @@ const App: FC = (): JSX.Element => {
 	}, [opened])
 
 	const gameIsFinished = useMemo(() => {
-		return finished.length === 6;
+		return finished.length >= possibles.length;
 	}, [finished])
 
 	return (
 		<>
 			<h2>Memo TS</h2>
-			<div className="w-50 d-flex flex-wrap justify-content-center align-items-center">
+			<div className="cards">
 				{
 					game.map((card, index) => {
 						return <Card
