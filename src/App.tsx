@@ -1,22 +1,22 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, FC } from 'react'
+import Card from './Card'
 import './App.css'
 
-type opened =  [ number, number ];
-type game = number[];
+const possibles = [ 1, 2, 3, 4, 5, 6, 7, 8 ];
 
-function App() {
+const App: FC = (): JSX.Element => {
 
-	const [game, setGame] = useState<game>([])
+	const [game, setGame] = useState<number[]>([])
 	const [opened, setOpened] = useState<opened>([-1, -1])
 	const [finished, setFinished] = useState<number[]>([])
-	const [ moves, setMoves ] = useState<number>(0)
-	
+	const [moves, setMoves] = useState<number>(0)
+
 	useEffect(() => {
 		startGame();
 	}, [])
 
 	const startGame = () => {
-		const numbers = [ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6 ];
+		const numbers = [ ...possibles, ...possibles ];
 		const shuffled = numbers.sort(() => Math.random() - 0.5);
 		setOpened([-1, -1]);
 		setFinished([]);
@@ -58,13 +58,13 @@ function App() {
 	}, [opened])
 
 	const gameIsFinished = useMemo(() => {
-		return finished.length === 6;
+		return finished.length >= possibles.length;
 	}, [finished])
 
 	return (
-		<div className="d-flex flex-column align-items-center">
+		<>
 			<h2>Memo TS</h2>
-			<div className="w-50 d-flex flex-wrap justify-content-center align-items-center">
+			<div className="cards">
 				{
 					game.map((card, index) => {
 						return <Card
@@ -74,45 +74,20 @@ function App() {
 							openCard={openCard}
 							opened={opened}
 							finished={finished}
-							/>
+						/>
 					})
 				}
 			</div>
+
 			{
-			gameIsFinished 
-			? <div>Game is finished in {moves} moves!</div>
-			: <div>Moves: {moves} </div>
+				gameIsFinished
+					? <div>Game is finished in {moves} moves!</div>
+					: <div>Moves: {moves} </div>
 			}
-		<button onClick={() => startGame()}>Restart</button>
-		</div>
+
+			<button onClick={() => startGame()}>Restart</button>
+		</>
 	)
-}
-
-function Card({ value, index, openCard, opened, finished }: { value: number, index: number, openCard: (index: number) => void, opened: opened, finished: number[] })
-{
-	console.log(opened);
-	
-	const className = useMemo(() => {
-		let className = 'card';
-		if (finished.includes(value)) {
-			className += ' finished';
-		}
-		if (opened.includes(index)) {
-			className += ' opened';
-		}
-		return className;
-	}, [opened, finished, value, index])
-
-	return <>
-		<div className="card-wrapper">
-			<div className={className} onClick={() => openCard(index)}>
-				<div className="card-front">
-					?
-				</div>
-				{value}
-			</div>
-		</div>
-	</>
 }
 
 export default App
