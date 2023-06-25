@@ -62,7 +62,7 @@ function App() {
 	}, [finished])
 
 	return (
-		<div className="d-flex flex-column align-items-center">
+		<>
 			<h2>Memo TS</h2>
 			<div className="w-50 d-flex flex-wrap justify-content-center align-items-center">
 				{
@@ -78,13 +78,15 @@ function App() {
 					})
 				}
 			</div>
+
 			{
 			gameIsFinished 
 			? <div>Game is finished in {moves} moves!</div>
 			: <div>Moves: {moves} </div>
 			}
-		<button onClick={() => startGame()}>Restart</button>
-		</div>
+			
+			<button onClick={() => startGame()}>Restart</button>
+		</>
 	)
 }
 
